@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inscription | Formation en géoépidémiologie | R Users Community Bénin</title>
+<meta name="description" content="Inscription à la formation en ligne gratuite en géoépidémiologie : modélisation spatiale et cartographie des risques sanitaires avec R, QGIS et ArcGIS, du 14 au 18 décembre 2026.">
+<meta property="og:title" content="Formation en géoépidémiologie : inscriptions ouvertes">
+<meta property="og:description" content="Formation en ligne gratuite, du 14 au 18 décembre 2026, de 18h à 21h (heure du Bénin). R Users Community Bénin.">
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bleu:#1F5FA8; --bleu-fonce:#16407A; --bleu-ciel:#E3F0FB; --bord:#C9DBEE;
+    --texte:#0F2A4A; --gris:#4A6380; --fond:#F4F8FC; --erreur:#B3261E;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--fond);color:var(--texte);font-family:'Open Sans',Arial,sans-serif;font-size:16px;line-height:1.5}
+  a{color:var(--bleu)}
+  .entete{background:var(--bleu);color:#fff;padding:28px 16px 34px}
+  .entete-int{max-width:760px;margin:0 auto}
+  .marque{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+  .marque-logo{width:64px;height:64px;background:#fff;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .marque-logo img{width:56px;height:56px;object-fit:contain}
+  .marque-nom{font-family:'Montserrat',Arial,sans-serif;font-weight:800;font-size:17px;letter-spacing:.3px}
+  .marque-sous{font-size:14px;color:#D6E9F8}
+  .pastille{display:inline-block;background:#fff;color:var(--bleu);font-family:'Montserrat',Arial,sans-serif;font-weight:800;font-size:13px;padding:6px 14px;border-radius:999px;letter-spacing:.4px;margin-bottom:12px}
+  h1{font-family:'Montserrat',Arial,sans-serif;font-weight:800;font-size:clamp(30px,6vw,46px);line-height:1.08;margin:0 0 8px}
+  .sous-titre{font-family:'Montserrat',Arial,sans-serif;font-weight:700;font-size:clamp(18px,3.2vw,23px);line-height:1.3;margin:0}
+  .infos{max-width:760px;margin:-18px auto 0;background:#fff;border:1px solid var(--bord);border-radius:14px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));overflow:hidden}
+  .info{padding:14px 18px;border-right:1px solid var(--bord)}
+  .info:last-child{border-right:0}
+  .info b{display:block;font-size:12px;letter-spacing:1px;color:var(--bleu)}
+  .info span{font-weight:700;font-size:16px}
+  main{max-width:760px;margin:0 auto;padding:24px 16px 48px}
+  .intro{color:var(--gris);margin:4px 0 20px}
+  fieldset{border:1px solid var(--bord);border-radius:14px;background:#fff;padding:22px 20px 8px;margin:0 0 18px}
+  legend{font-family:'Montserrat',Arial,sans-serif;font-weight:800;font-size:17px;color:var(--bleu);padding:0 8px}
+  .champ{margin-bottom:20px}
+  .champ > label,.question{display:block;font-weight:700;margin-bottom:6px}
+  .obl{color:var(--erreur)}
+  .aide{font-size:14px;color:var(--gris);margin:-2px 0 8px}
+  input[type=text],input[type=email],input[type=tel],textarea{width:100%;font:inherit;color:inherit;padding:12px 14px;border:1.5px solid var(--bord);border-radius:10px;background:#fff}
+  input:focus,textarea:focus{outline:none;border-color:var(--bleu);box-shadow:0 0 0 3px rgba(31,95,168,.15)}
+  textarea{min-height:110px;resize:vertical}
+  .choix{display:flex;flex-direction:column;gap:8px}
+  .choix label{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--bord);border-radius:10px;cursor:pointer;font-weight:600;min-height:44px}
+  .choix label:hover{border-color:var(--bleu)}
+  .choix input{width:18px;height:18px;accent-color:var(--bleu);flex-shrink:0}
+  .choix label:has(input:checked){border-color:var(--bleu);background:var(--bleu-ciel)}
+  .choix.ligne{flex-direction:row;flex-wrap:wrap}
+  .choix.ligne label{flex:1 1 140px}
+  .precision{margin-top:8px}
+  .cache{display:none}
+  .erreur-msg{color:var(--erreur);font-size:14px;margin-top:6px;display:none}
+  .champ.invalide .erreur-msg{display:block}
+  .champ.invalide input,.champ.invalide .choix label{border-color:var(--erreur)}
+  /* liste des pays */
+  .combo{position:relative}
+  .combo-liste{position:absolute;left:0;right:0;top:calc(100% + 4px);max-height:260px;overflow-y:auto;background:#fff;border:1.5px solid var(--bord);border-radius:10px;margin:0;padding:4px;list-style:none;z-index:20;box-shadow:0 8px 24px rgba(15,42,74,.12)}
+  .combo-liste li{padding:10px 12px;border-radius:8px;cursor:pointer}
+  .combo-liste li[aria-selected=true],.combo-liste li:hover{background:var(--bleu-ciel)}
+  .combo-vide{color:var(--gris);cursor:default!important}
+  .bouton{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;font-family:'Montserrat',Arial,sans-serif;font-weight:800;font-size:18px;color:#fff;background:var(--bleu);border:0;border-radius:12px;padding:16px 20px;cursor:pointer;min-height:52px}
+  .bouton:hover{background:var(--bleu-fonce)}
+  .bouton:disabled{opacity:.7;cursor:wait}
+  .piege{position:absolute;left:-5000px}
+  .merci{display:none;text-align:center}
+  .merci .carte{background:#fff;border:1px solid var(--bord);border-radius:14px;padding:28px 22px;margin-bottom:18px}
+  .merci h2{font-family:'Montserrat',Arial,sans-serif;font-weight:800;font-size:28px;margin:6px 0 10px;color:var(--bleu)}
+  .coche{width:64px;height:64px;border-radius:50%;background:var(--bleu-ciel);display:inline-flex;align-items:center;justify-content:center}
+  .etapes{text-align:left;margin:18px auto 0;max-width:520px;padding-left:20px}
+  .etapes li{margin-bottom:6px}
+  .reseaux{display:flex;flex-direction:column;gap:10px;max-width:520px;margin:16px auto 0}
+  .reseau{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--texte);border:1.5px solid var(--bord);border-radius:12px;padding:12px 16px;font-weight:700;background:#fff;min-height:52px;text-align:left}
+  .reseau:hover{border-color:var(--bleu)}
+  .reseau.principal{background:var(--bleu);color:#fff;border-color:var(--bleu)}
+  .reseau small{display:block;font-weight:400;font-size:13px;opacity:.85}
+  .reseau svg{flex-shrink:0}
+  footer{text-align:center;font-size:14px;color:var(--gris);padding:0 16px 32px}
+  @media (max-width:560px){
+    .infos{grid-template-columns:1fr;margin-top:-14px}
+    .info{border-right:0;border-bottom:1px solid var(--bord)}
+    .info:last-child{border-bottom:0}
+    fieldset{padding:18px 14px 4px}
+  }
+</style>
+</head>
+<body>
+
+<header class="entete">
+  <div class="entete-int">
+    <div class="marque">
+      <div class="marque-logo"><img src="logo.png" alt="Logo R Users Community"></div>
+      <div>
+        <div class="marque-nom">R USERS COMMUNITY BÉNIN</div>
+        <div class="marque-sous">Vulgarisation scientifique · Clôture de l'année 2026</div>
+      </div>
+    </div>
+    <div class="pastille">FORMATION EN LIGNE GRATUITE</div>
+    <h1>Formation en géoépidémiologie</h1>
+    <p class="sous-titre">Modélisation spatiale et cartographie des risques sanitaires avec R, QGIS et ArcGIS</p>
+  </div>
+</header>
+
+<div style="padding:0 16px">
+  <div class="infos">
+    <div class="info"><b>DATES</b><span>14 au 18 décembre 2026</span></div>
+    <div class="info"><b>HORAIRE</b><span>18h à 21h (heure du Bénin)</span></div>
+    <div class="info"><b>FORMAT</b><span>En ligne, via Zoom</span></div>
+  </div>
+</div>
+
+<main>
+  <section id="bloc-formulaire">
+    <p class="intro">Remplissez ce formulaire pour vous inscrire. Vous recevrez le lien Zoom et les consignes avant le début de la formation. Les champs marqués <span class="obl">*</span> sont obligatoires.</p>
+
+    <form id="formulaire" novalidate>
+      <input class="piege" type="text" name="site_web" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <fieldset>
+        <legend>Vos coordonnées</legend>
+
+        <div class="champ" data-champ="nom">
+          <label for="nom">Nom et prénom(s) <span class="obl">*</span></label>
+          <input type="text" id="nom" name="nom" autocomplete="name" required>
+          <div class="erreur-msg">Veuillez indiquer votre nom et vos prénoms.</div>
+        </div>
+
+        <div class="champ" data-champ="email">
+          <label for="email">Adresse e-mail <span class="obl">*</span></label>
+          <input type="email" id="email" name="email" autocomplete="email" required>
+          <div class="erreur-msg">Veuillez indiquer une adresse e-mail valide.</div>
+        </div>
+
+        <div class="champ" data-champ="whatsapp">
+          <label for="whatsapp">Numéro WhatsApp <span class="obl">*</span></label>
+          <p class="aide">Avec l'indicatif du pays, par exemple +229 01 00 00 00 00</p>
+          <input type="tel" id="whatsapp" name="whatsapp" autocomplete="tel" required>
+          <div class="erreur-msg">Veuillez indiquer votre numéro WhatsApp avec l'indicatif.</div>
+        </div>
+
+        <div class="champ" data-champ="pays">
+          <label for="pays">Pays de résidence <span class="obl">*</span></label>
+          <p class="aide">Tapez les premières lettres puis choisissez votre pays dans la liste.</p>
+          <div class="combo">
+            <input type="text" id="pays" name="pays" role="combobox" aria-expanded="false" aria-controls="pays-liste" aria-autocomplete="list" autocomplete="off" required>
+            <ul id="pays-liste" class="combo-liste cache" role="listbox"></ul>
+          </div>
+          <div class="erreur-msg">Veuillez choisir votre pays dans la liste.</div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Votre profil</legend>
+
+        <div class="champ" data-champ="niveau_etudes">
+          <span class="question" id="q-etudes">Niveau d'études <span class="obl">*</span></span>
+          <div class="choix" role="radiogroup" aria-labelledby="q-etudes">
+            <label><input type="radio" name="niveau_etudes" value="Licence"> Licence</label>
+            <label><input type="radio" name="niveau_etudes" value="Master"> Master</label>
+            <label><input type="radio" name="niveau_etudes" value="Doctorat"> Doctorat</label>
+            <label><input type="radio" name="niveau_etudes" value="Autre"> Autre</label>
+          </div>
+          <input type="text" class="precision cache" name="niveau_etudes_autre" aria-label="Précisez votre niveau d'études" placeholder="Précisez">
+          <div class="erreur-msg">Veuillez choisir votre niveau d'études (et le préciser si « Autre »).</div>
+        </div>
+
+        <div class="champ" data-champ="domaine">
+          <span class="question" id="q-domaine">Domaine d'activité <span class="obl">*</span></span>
+          <div class="choix" role="radiogroup" aria-labelledby="q-domaine">
+            <label><input type="radio" name="domaine" value="Médecine, soins infirmiers ou obstétricaux"> Médecine, soins infirmiers ou obstétricaux</label>
+            <label><input type="radio" name="domaine" value="Santé publique, épidémiologie, surveillance"> Santé publique, épidémiologie, surveillance</label>
+            <label><input type="radio" name="domaine" value="Statistique, biostatistique, data science"> Statistique, biostatistique, data science</label>
+            <label><input type="radio" name="domaine" value="Géographie, géomatique, SIG"> Géographie, géomatique, SIG</label>
+            <label><input type="radio" name="domaine" value="Environnement, agronomie"> Environnement, agronomie</label>
+            <label><input type="radio" name="domaine" value="Autre"> Autre</label>
+          </div>
+          <input type="text" class="precision cache" name="domaine_autre" aria-label="Précisez votre domaine d'activité" placeholder="Précisez">
+          <div class="erreur-msg">Veuillez choisir votre domaine (et le préciser si « Autre »).</div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Vos compétences</legend>
+
+        <div class="champ" data-champ="niveau_analyse">
+          <span class="question" id="q-analyse">Votre niveau en analyse des données (statistique) <span class="obl">*</span></span>
+          <p class="aide">Par exemple : tableaux descriptifs, tests statistiques, régressions.</p>
+          <div class="choix ligne" role="radiogroup" aria-labelledby="q-analyse">
+            <label><input type="radio" name="niveau_analyse" value="Aucune notion"> Aucune notion</label>
+            <label><input type="radio" name="niveau_analyse" value="Débutant"> Débutant</label>
+            <label><input type="radio" name="niveau_analyse" value="Intermédiaire"> Intermédiaire</label>
+            <label><input type="radio" name="niveau_analyse" value="Avancé"> Avancé</label>
+          </div>
+          <div class="erreur-msg">Veuillez indiquer votre niveau en analyse des données.</div>
+        </div>
+
+        <div class="champ" data-champ="logiciels">
+          <span class="question" id="q-logiciels">Quels logiciels avez-vous déjà utilisés ? <span class="obl">*</span></span>
+          <p class="aide">Plusieurs réponses possibles.</p>
+          <div class="choix" role="group" aria-labelledby="q-logiciels">
+            <label><input type="checkbox" name="logiciels" value="R"> R</label>
+            <label><input type="checkbox" name="logiciels" value="QGIS"> QGIS</label>
+            <label><input type="checkbox" name="logiciels" value="ArcGIS"> ArcGIS</label>
+            <label><input type="checkbox" name="logiciels" value="Autre"> Autre</label>
+            <label><input type="checkbox" name="logiciels" value="Aucun"> Aucun</label>
+          </div>
+          <input type="text" class="precision cache" name="logiciels_autre" aria-label="Précisez les autres logiciels" placeholder="Précisez (par exemple Stata, SPSS, GeoDa)">
+          <div class="erreur-msg">Veuillez cocher au moins une réponse (et préciser si « Autre »).</div>
+        </div>
+
+        <div class="champ cache" data-champ="niveau_r" id="bloc-niveau-r">
+          <span class="question" id="q-r">Votre niveau en R <span class="obl">*</span></span>
+          <div class="choix ligne" role="radiogroup" aria-labelledby="q-r">
+            <label><input type="radio" name="niveau_r" value="Débutant"> Débutant</label>
+            <label><input type="radio" name="niveau_r" value="Intermédiaire"> Intermédiaire</label>
+            <label><input type="radio" name="niveau_r" value="Avancé"> Avancé</label>
+          </div>
+          <div class="erreur-msg">Veuillez indiquer votre niveau en R.</div>
+        </div>
+
+        <div class="champ cache" data-champ="niveau_sig" id="bloc-niveau-sig">
+          <span class="question" id="q-sig">Votre niveau en cartographie ou en SIG (QGIS, ArcGIS) <span class="obl">*</span></span>
+          <div class="choix ligne" role="radiogroup" aria-labelledby="q-sig">
+            <label><input type="radio" name="niveau_sig" value="Débutant"> Débutant</label>
+            <label><input type="radio" name="niveau_sig" value="Intermédiaire"> Intermédiaire</label>
+            <label><input type="radio" name="niveau_sig" value="Avancé"> Avancé</label>
+          </div>
+          <div class="erreur-msg">Veuillez indiquer votre niveau en cartographie.</div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Vos attentes</legend>
+        <div class="champ">
+          <label for="attentes">Qu'attendez-vous de cette formation ?</label>
+          <textarea id="attentes" name="attentes"></textarea>
+        </div>
+      </fieldset>
+
+      <button class="bouton" type="submit" id="envoyer">Valider mon inscription</button>
+      <p class="erreur-msg" id="erreur-envoi" style="text-align:center">L'envoi a échoué. Vérifiez votre connexion Internet et réessayez.</p>
+    </form>
+  </section>
+
+  <section class="merci" id="bloc-merci" aria-live="polite">
+    <div class="carte">
+      <div class="coche"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#1F5FA8" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      <h2>Inscription enregistrée</h2>
+      <p id="merci-nom" style="margin:0 0 6px;font-weight:700"></p>
+      <p style="margin:0;color:var(--gris)">Merci pour votre inscription à la formation en géoépidémiologie de la R Users Community Bénin.</p>
+      <ol class="etapes">
+        <li>Vous recevrez le lien Zoom et les consignes par e-mail et sur WhatsApp avant le 14 décembre.</li>
+        <li>Installez R, RStudio et QGIS sur votre ordinateur avant le premier jour.</li>
+        <li>Rendez-vous chaque soir de 18h à 21h (heure du Bénin), du 14 au 18 décembre 2026.</li>
+      </ol>
+    </div>
+
+    <div class="carte">
+      <h2 style="font-size:22px">Restez informé(e)</h2>
+      <p style="margin:0;color:var(--gris)">Toutes les annonces de la formation (lien Zoom, supports, rappels) sont publiées sur la chaîne WhatsApp. Abonnez-vous dès maintenant.</p>
+      <div class="reseaux" id="reseaux"></div>
+    </div>
+  </section>
+</main>
+
+<footer>R Users Community Bénin · Contact : <a href="https://wa.me/2290190754955">WhatsApp +229 01 90 75 49 55</a> · <a href="mailto:agolionel10@gmail.com">agolionel10@gmail.com</a></footer>
+
+<script>
+/* ================== CONFIGURATION ================== */
+// Collez ici l'URL de l'application Web Google Apps Script (étape 2 du guide).
+// Tant qu'elle est vide, le formulaire fonctionne en mode démonstration (rien n'est enregistré).
+const URL_ENREGISTREMENT = "";
+
+const RESEAUX = [
+  { nom: "Chaîne WhatsApp R Users Community", detail: "Annonces, lien Zoom et rappels", url: "https://whatsapp.com/channel/0029VbCEKNRLY6dGXc315R0U", principal: true, icone: "whatsapp" },
+  { nom: "Chaîne YouTube", detail: "Replays et vidéos pédagogiques", url: "https://youtube.com/@lionelrsuer", icone: "youtube" },
+  { nom: "Groupe LinkedIn", detail: "Échanges avec la communauté", url: "https://www.linkedin.com/groups/13351302", icone: "linkedin" },
+  { nom: "TikTok", detail: "Capsules courtes", url: "", icone: "tiktok" } // ajoutez le lien TikTok ici
+];
+/* =================================================== */
+
+const PAYS = ["Afghanistan","Afrique du Sud","Albanie","Algérie","Allemagne","Andorre","Angola","Antigua-et-Barbuda","Arabie saoudite","Argentine","Arménie","Australie","Autriche","Azerbaïdjan","Bahamas","Bahreïn","Bangladesh","Barbade","Belgique","Belize","Bénin","Bhoutan","Biélorussie","Birmanie (Myanmar)","Bolivie","Bosnie-Herzégovine","Botswana","Brésil","Brunei","Bulgarie","Burkina Faso","Burundi","Cabo Verde","Cambodge","Cameroun","Canada","Centrafrique","Chili","Chine","Chypre","Colombie","Comores","Congo (Brazzaville)","Congo (RDC)","Corée du Nord","Corée du Sud","Costa Rica","Côte d'Ivoire","Croatie","Cuba","Danemark","Djibouti","Dominique","Égypte","Émirats arabes unis","Équateur","Érythrée","Espagne","Estonie","Eswatini","États-Unis","Éthiopie","Fidji","Finlande","France","Gabon","Gambie","Géorgie","Ghana","Grèce","Grenade","Guatemala","Guinée","Guinée équatoriale","Guinée-Bissau","Guyana","Haïti","Honduras","Hongrie","Îles Marshall","Îles Salomon","Inde","Indonésie","Irak","Iran","Irlande","Islande","Israël","Italie","Jamaïque","Japon","Jordanie","Kazakhstan","Kenya","Kirghizistan","Kiribati","Koweït","Laos","Lesotho","Lettonie","Liban","Liberia","Libye","Liechtenstein","Lituanie","Luxembourg","Macédoine du Nord","Madagascar","Malaisie","Malawi","Maldives","Mali","Malte","Maroc","Maurice","Mauritanie","Mexique","Micronésie","Moldavie","Monaco","Mongolie","Monténégro","Mozambique","Namibie","Nauru","Népal","Nicaragua","Niger","Nigeria","Norvège","Nouvelle-Zélande","Oman","Ouganda","Ouzbékistan","Pakistan","Palaos","Palestine","Panama","Papouasie-Nouvelle-Guinée","Paraguay","Pays-Bas","Pérou","Philippines","Pologne","Portugal","Qatar","République dominicaine","République tchèque","Roumanie","Royaume-Uni","Russie","Rwanda","Saint-Christophe-et-Niévès","Saint-Marin","Saint-Vincent-et-les-Grenadines","Sainte-Lucie","Salvador","Samoa","São Tomé-et-Principe","Sénégal","Serbie","Seychelles","Sierra Leone","Singapour","Slovaquie","Slovénie","Somalie","Soudan","Soudan du Sud","Sri Lanka","Suède","Suisse","Suriname","Syrie","Tadjikistan","Tanzanie","Tchad","Thaïlande","Timor oriental","Togo","Tonga","Trinité-et-Tobago","Tunisie","Turkménistan","Turquie","Tuvalu","Ukraine","Uruguay","Vanuatu","Vatican","Venezuela","Viêt Nam","Yémen","Zambie","Zimbabwe"];
+
+const sansAccent = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
+const form = document.getElementById("formulaire");
+
+/* ---------- Liste des pays avec recherche ---------- */
+const champPays = document.getElementById("pays");
+const listePays = document.getElementById("pays-liste");
+let actif = -1, resultats = [];
+
+function afficherPays() {
+  const q = sansAccent(champPays.value);
+  resultats = q ? PAYS.filter(p => sansAccent(p).startsWith(q)).concat(PAYS.filter(p => !sansAccent(p).startsWith(q) && sansAccent(p).includes(q))) : PAYS.slice();
+  listePays.innerHTML = "";
+  if (!resultats.length) {
+    const li = document.createElement("li"); li.className = "combo-vide"; li.textContent = "Aucun pays trouvé";
+    listePays.appendChild(li);
+  }
+  resultats.forEach((p, i) => {
+    const li = document.createElement("li");
+    li.textContent = p; li.id = "pays-opt-" + i; li.setAttribute("role", "option");
+    li.setAttribute("aria-selected", i === actif ? "true" : "false");
+    li.addEventListener("mousedown", e => { e.preventDefault(); choisirPays(p); });
+    listePays.appendChild(li);
+  });
+  listePays.classList.remove("cache");
+  champPays.setAttribute("aria-expanded", "true");
+}
+function fermerPays() { listePays.classList.add("cache"); champPays.setAttribute("aria-expanded", "false"); actif = -1; }
+function choisirPays(p) { champPays.value = p; fermerPays(); valider("pays"); }
+champPays.addEventListener("focus", () => { actif = -1; afficherPays(); });
+champPays.addEventListener("input", () => { actif = -1; afficherPays(); });
+champPays.addEventListener("blur", () => {
+  const exact = PAYS.find(p => sansAccent(p) === sansAccent(champPays.value));
+  if (exact) champPays.value = exact;
+  setTimeout(fermerPays, 100);
+});
+champPays.addEventListener("keydown", e => {
+  if (listePays.classList.contains("cache")) return;
+  if (e.key === "ArrowDown") { e.preventDefault(); actif = Math.min(actif + 1, resultats.length - 1); afficherPays(); }
+  else if (e.key === "ArrowUp") { e.preventDefault(); actif = Math.max(actif - 1, 0); afficherPays(); }
+  else if (e.key === "Enter" && resultats.length) { e.preventDefault(); choisirPays(resultats[Math.max(actif, 0)]); }
+  else if (e.key === "Escape") fermerPays();
+  const el = document.getElementById("pays-opt-" + actif);
+  if (el) { el.scrollIntoView({ block: "nearest" }); champPays.setAttribute("aria-activedescendant", el.id); }
+});
+
+/* ---------- Logique conditionnelle ---------- */
+function majAffichage() {
+  [["niveau_etudes", "niveau_etudes_autre"], ["domaine", "domaine_autre"]].forEach(([nom, autre]) => {
+    const v = (form.querySelector(`input[name=${nom}]:checked`) || {}).value;
+    form.elements[autre].classList.toggle("cache", v !== "Autre");
+  });
+  const coches = [...form.querySelectorAll("input[name=logiciels]:checked")].map(c => c.value);
+  form.elements.logiciels_autre.classList.toggle("cache", !coches.includes("Autre"));
+  document.getElementById("bloc-niveau-r").classList.toggle("cache", !coches.includes("R"));
+  document.getElementById("bloc-niveau-sig").classList.toggle("cache", !(coches.includes("QGIS") || coches.includes("ArcGIS")));
+}
+form.querySelectorAll("input[name=logiciels]").forEach(c => c.addEventListener("change", () => {
+  if (c.value === "Aucun" && c.checked) form.querySelectorAll("input[name=logiciels]").forEach(o => { if (o !== c) o.checked = false; });
+  if (c.value !== "Aucun" && c.checked) form.querySelector("input[name=logiciels][value=Aucun]").checked = false;
+  majAffichage(); valider("logiciels");
+}));
+form.querySelectorAll("input[type=radio]").forEach(r => r.addEventListener("change", () => { majAffichage(); valider(r.name); }));
+
+/* ---------- Validation ---------- */
+const val = n => (form.querySelector(`input[name=${n}]:checked`) || {}).value || "";
+const regles = {
+  nom: () => form.elements.nom.value.trim().length >= 3,
+  email: () => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.elements.email.value.trim()),
+  whatsapp: () => form.elements.whatsapp.value.replace(/[^\d]/g, "").length >= 8,
+  pays: () => PAYS.includes(champPays.value),
+  niveau_etudes: () => val("niveau_etudes") && (val("niveau_etudes") !== "Autre" || form.elements.niveau_etudes_autre.value.trim()),
+  domaine: () => val("domaine") && (val("domaine") !== "Autre" || form.elements.domaine_autre.value.trim()),
+  niveau_analyse: () => val("niveau_analyse"),
+  logiciels: () => {
+    const c = [...form.querySelectorAll("input[name=logiciels]:checked")].map(x => x.value);
+    return c.length && (!c.includes("Autre") || form.elements.logiciels_autre.value.trim());
+  },
+  niveau_r: () => document.getElementById("bloc-niveau-r").classList.contains("cache") || val("niveau_r"),
+  niveau_sig: () => document.getElementById("bloc-niveau-sig").classList.contains("cache") || val("niveau_sig")
+};
+function valider(nom) {
+  const bloc = form.querySelector(`[data-champ=${nom}]`);
+  if (!bloc || !regles[nom]) return true;
+  const ok = !!regles[nom]();
+  bloc.classList.toggle("invalide", !ok);
+  return ok;
+}
+["nom", "email", "whatsapp"].forEach(n => form.elements[n].addEventListener("blur", () => { if (form.elements[n].value) valider(n); }));
+
+/* ---------- Envoi ---------- */
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  const invalides = Object.keys(regles).filter(n => !valider(n));
+  if (invalides.length) {
+    form.querySelector(`[data-champ=${invalides[0]}]`).scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+  if (form.elements.site_web.value) return; // anti-robot
+
+  const coches = [...form.querySelectorAll("input[name=logiciels]:checked")].map(x => x.value);
+  const donnees = {
+    nom: form.elements.nom.value.trim(),
+    email: form.elements.email.value.trim(),
+    whatsapp: form.elements.whatsapp.value.trim(),
+    pays: champPays.value,
+    niveau_etudes: val("niveau_etudes") === "Autre" ? "Autre : " + form.elements.niveau_etudes_autre.value.trim() : val("niveau_etudes"),
+    domaine: val("domaine") === "Autre" ? "Autre : " + form.elements.domaine_autre.value.trim() : val("domaine"),
+    niveau_analyse: val("niveau_analyse"),
+    logiciels: coches.map(c => c === "Autre" ? "Autre : " + form.elements.logiciels_autre.value.trim() : c).join(", "),
+    niveau_r: coches.includes("R") ? val("niveau_r") : "Aucun",
+    niveau_sig: (coches.includes("QGIS") || coches.includes("ArcGIS")) ? val("niveau_sig") : "Aucun",
+    attentes: form.elements.attentes.value.trim()
+  };
+
+  const bouton = document.getElementById("envoyer");
+  bouton.disabled = true; bouton.textContent = "Envoi en cours…";
+  document.getElementById("erreur-envoi").style.display = "none";
+  try {
+    if (URL_ENREGISTREMENT) {
+      await fetch(URL_ENREGISTREMENT, { method: "POST", mode: "no-cors", body: new URLSearchParams(donnees) });
+    }
+    afficherMerci(donnees.nom);
+  } catch (err) {
+    document.getElementById("erreur-envoi").style.display = "block";
+    bouton.disabled = false; bouton.textContent = "Valider mon inscription";
+  }
+});
+
+/* ---------- Page de remerciement ---------- */
+const ICONES = {
+  whatsapp: '<path d="M20.5 11.6a8.5 8.5 0 0 1-12.6 7.4L3.5 20.5l1.5-4.3A8.5 8.5 0 1 1 20.5 11.6z"/><path d="M9 8.5c0 3 2.5 6 5.5 6.5l1.2-1.3-1.8-.9-.8.8c-1-.4-2.2-1.6-2.6-2.6l.8-.8-.9-1.8L9 8.5z"/>',
+  youtube: '<rect x="2.5" y="5.5" width="19" height="13" rx="3.5"/><path d="M10 9.2v5.6l4.8-2.8z"/>',
+  linkedin: '<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7.5 10.5v6M7.5 7.5v.01M11 16.5v-6M11 13c0-1.6 1-2.6 2.4-2.6 1.4 0 2.1.9 2.1 2.6v3.5"/>',
+  tiktok: '<path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3c.4 2.5 2.2 4.2 5 4.5"/>'
+};
+function afficherMerci(nom) {
+  document.getElementById("merci-nom").textContent = "Bienvenue, " + nom + " !";
+  const zone = document.getElementById("reseaux");
+  zone.innerHTML = "";
+  RESEAUX.filter(r => r.url).forEach(r => {
+    const a = document.createElement("a");
+    a.className = "reseau" + (r.principal ? " principal" : "");
+    a.href = r.url; a.target = "_blank"; a.rel = "noopener";
+    a.innerHTML = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONES[r.icone]}</svg><span>${r.nom}<small>${r.detail}</small></span>`;
+    zone.appendChild(a);
+  });
+  document.getElementById("bloc-formulaire").style.display = "none";
+  document.getElementById("bloc-merci").style.display = "block";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+</script>
+</body>
+</html>
