@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0F1B3D">
+<link rel="apple-touch-icon" href="icone-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Inscriptions RUC">
 <title>Tableau de bord des inscriptions | R Users Community</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
@@ -52,7 +57,7 @@
 <header>
   <div class="entete">
     <div><div class="t">Inscriptions · Formation en géoépidémiologie</div><div class="s">R Users Community · mis à jour le <b id="maj">…</b></div></div>
-    <div class="actions"><button class="b1" id="copier">Copier un message de communication</button><button class="b2" id="actualiser">Actualiser</button></div>
+    <div class="actions"><button class="b1" id="copier">Copier un message de communication</button><button class="b1" id="installer" style="display:none">Installer l'application</button><button class="b2" id="actualiser">Actualiser</button></div>
   </div>
 </header>
 
@@ -170,6 +175,10 @@ document.getElementById("copier").onclick = async () => {
   try { await navigator.clipboard.writeText(t); toast("Message copié, prêt à coller sur WhatsApp"); }
   catch (e) { prompt("Copiez ce message :", t); }
 };
+let invite = null;
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); invite = e; document.getElementById("installer").style.display = "inline-block"; });
+document.getElementById("installer").onclick = async () => { if (!invite) return; invite.prompt(); await invite.userChoice; invite = null; document.getElementById("installer").style.display = "none"; };
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 charger();
 setInterval(() => { if (!document.hidden) charger(); }, 60000);
 </script>
