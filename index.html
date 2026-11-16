@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Inscription | Formation en géoépidémiologie | R Users Community Bénin</title>
+<title>Inscription | Formation en géoépidémiologie | R Users Community</title>
 <meta name="description" content="Inscription à la formation en ligne gratuite en géoépidémiologie : modélisation spatiale et cartographie des risques sanitaires avec R, QGIS et ArcGIS, du 14 au 18 décembre 2026.">
 <meta property="og:title" content="Formation en géoépidémiologie : inscriptions ouvertes">
-<meta property="og:description" content="Formation en ligne gratuite, du 14 au 18 décembre 2026, de 18h à 21h (heure du Bénin). R Users Community Bénin.">
+<meta property="og:description" content="Formation en ligne gratuite, du 14 au 18 décembre 2026, de 18h à 21h (heure du Bénin). R Users Community.">
 <link rel="icon" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
@@ -94,7 +94,7 @@
     <div class="marque">
       <div class="marque-logo"><img src="logo.png" alt="Logo R Users Community"></div>
       <div>
-        <div class="marque-nom">R USERS COMMUNITY BÉNIN</div>
+        <div class="marque-nom">R USERS COMMUNITY</div>
         <div class="marque-sous">Vulgarisation scientifique · Clôture de l'année 2026</div>
       </div>
     </div>
@@ -240,9 +240,24 @@
         </div>
       </fieldset>
 
+      <p id="deja-appareil" style="display:none;background:#FFF4E5;border:1px solid #F5C27A;border-radius:10px;padding:12px 14px;margin:0 0 14px;font-size:15px">Une inscription a déjà été faite depuis cet appareil. Si c'est la vôtre, inutile de recommencer : votre place est réservée. Vous pouvez toutefois inscrire une autre personne.</p>
       <button class="bouton" type="submit" id="envoyer">Valider mon inscription</button>
       <p class="erreur-msg" id="erreur-envoi" style="text-align:center">L'envoi a échoué. Vérifiez votre connexion Internet et réessayez.</p>
     </form>
+  </section>
+
+  <section class="merci" id="bloc-doublon" aria-live="polite">
+    <div class="carte">
+      <div class="coche"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#1F5FA8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.01"/></svg></div>
+      <h2>Vous êtes déjà inscrit(e)</h2>
+      <p style="margin:0 0 10px;color:var(--gris)">Une inscription existe déjà avec cette adresse e-mail ou ce numéro WhatsApp. Votre place est bien réservée : inutile de vous inscrire une seconde fois.</p>
+      <p style="margin:0;color:var(--gris)">Si vous pensez qu'il s'agit d'une erreur, écrivez-nous sur <a href="https://wa.me/2290190754955">WhatsApp au +229 01 90 75 49 55</a>.</p>
+    </div>
+    <div class="carte">
+      <h2 style="font-size:22px">Restez informé(e)</h2>
+      <p style="margin:0;color:var(--gris)">Les annonces de la formation (lien Zoom, supports, rappels) sont publiées sur la chaîne WhatsApp.</p>
+      <div class="reseaux" id="reseaux-doublon"></div>
+    </div>
   </section>
 
   <section class="merci" id="bloc-merci" aria-live="polite">
@@ -250,7 +265,7 @@
       <div class="coche"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#1F5FA8" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
       <h2>Inscription enregistrée</h2>
       <p id="merci-nom" style="margin:0 0 6px;font-weight:700"></p>
-      <p style="margin:0;color:var(--gris)">Merci pour votre inscription à la formation en géoépidémiologie de la R Users Community Bénin.</p>
+      <p style="margin:0;color:var(--gris)">Merci pour votre inscription à la formation en géoépidémiologie de la R Users Community.</p>
       <ol class="etapes">
         <li>Vous recevrez le lien Zoom et les consignes par e-mail et sur WhatsApp avant le 14 décembre.</li>
         <li>Installez R, RStudio et QGIS sur votre ordinateur avant le premier jour.</li>
@@ -266,7 +281,7 @@
   </section>
 </main>
 
-<footer>R Users Community Bénin · Contact : <a href="https://wa.me/2290190754955">WhatsApp +229 01 90 75 49 55</a> · <a href="mailto:agolionel10@gmail.com">agolionel10@gmail.com</a></footer>
+<footer>R Users Community · Contact : <a href="https://wa.me/2290190754955">WhatsApp +229 01 90 75 49 55</a> · <a href="mailto:agolionel10@gmail.com">agolionel10@gmail.com</a></footer>
 
 <script>
 /* ================== CONFIGURATION ================== */
@@ -402,15 +417,27 @@ form.addEventListener("submit", async e => {
   bouton.disabled = true; bouton.textContent = "Envoi en cours…";
   document.getElementById("erreur-envoi").style.display = "none";
   try {
+    let statut = "ok";
     if (URL_ENREGISTREMENT) {
-      await fetch(URL_ENREGISTREMENT, { method: "POST", mode: "no-cors", body: new URLSearchParams(donnees) });
+      let texte = null;
+      try {
+        const rep = await fetch(URL_ENREGISTREMENT, { method: "POST", body: new URLSearchParams(donnees) });
+        texte = await rep.text();
+      } catch (lecture) {
+        // réponse non lisible par le navigateur : envoi en mode simple (le serveur bloque de toute façon les doublons)
+        await fetch(URL_ENREGISTREMENT, { method: "POST", mode: "no-cors", body: new URLSearchParams(donnees) });
+      }
+      if (texte) { try { statut = JSON.parse(texte).statut || "ok"; } catch (x) { statut = "ok"; } }
     }
-    afficherMerci(donnees.nom);
+    try { localStorage.setItem("ruc_geoepi_inscrit", donnees.email); } catch (x) {}
+    if (statut === "doublon") afficherDoublon(); else afficherMerci(donnees.nom);
   } catch (err) {
     document.getElementById("erreur-envoi").style.display = "block";
     bouton.disabled = false; bouton.textContent = "Valider mon inscription";
   }
 });
+
+try { if (localStorage.getItem("ruc_geoepi_inscrit")) document.getElementById("deja-appareil").style.display = "block"; } catch (x) {}
 
 /* ---------- Page de remerciement ---------- */
 const ICONES = {
@@ -419,6 +446,23 @@ const ICONES = {
   linkedin: '<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7.5 10.5v6M7.5 7.5v.01M11 16.5v-6M11 13c0-1.6 1-2.6 2.4-2.6 1.4 0 2.1.9 2.1 2.6v3.5"/>',
   tiktok: '<path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3c.4 2.5 2.2 4.2 5 4.5"/>'
 };
+function remplirReseaux(idZone) {
+  const zone = document.getElementById(idZone);
+  zone.innerHTML = "";
+  RESEAUX.filter(r => r.url).forEach(r => {
+    const a = document.createElement("a");
+    a.className = "reseau" + (r.principal ? " principal" : "");
+    a.href = r.url; a.target = "_blank"; a.rel = "noopener";
+    a.innerHTML = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONES[r.icone]}</svg><span>${r.nom}<small>${r.detail}</small></span>`;
+    zone.appendChild(a);
+  });
+}
+function afficherDoublon() {
+  remplirReseaux("reseaux-doublon");
+  document.getElementById("bloc-formulaire").style.display = "none";
+  document.getElementById("bloc-doublon").style.display = "block";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
 function afficherMerci(nom) {
   document.getElementById("merci-nom").textContent = "Bienvenue, " + nom + " !";
   const zone = document.getElementById("reseaux");

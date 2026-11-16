@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Tableau de bord des inscriptions | R Users Community</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{--fond:#F3F1EC;--carte:#fff;--bord:#E3DED3;--texte:#0F1B3D;--gris:#5A6478;--orange:#E8590C;--ambre:#F5A524;--rouge:#C2321F;--vert:#0F9D8F}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--fond);color:var(--texte);font-family:'Poppins',Arial,sans-serif}
+  header{background:var(--texte);color:#fff;padding:18px 16px}
+  .entete{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .entete .t{font-weight:700;font-size:20px}.entete .s{font-size:13px;color:#C9D0DC}
+  .entete .s b{color:var(--ambre)}
+  .actions{display:flex;gap:8px;flex-wrap:wrap}
+  button{font-family:inherit;font-weight:700;font-size:14px;border:0;border-radius:10px;padding:10px 14px;cursor:pointer}
+  .b1{background:linear-gradient(90deg,var(--ambre),var(--orange));color:#fff}
+  .b2{background:#fff;color:var(--texte)}
+  main{max-width:1100px;margin:0 auto;padding:16px}
+  .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+  .kpi{background:var(--carte);border:1px solid var(--bord);border-radius:16px;padding:14px 16px;position:relative;overflow:hidden}
+  .kpi:before{content:"";position:absolute;left:0;top:0;right:0;height:5px;background:linear-gradient(90deg,var(--ambre),var(--orange))}
+  .kpi .l{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--gris);text-transform:uppercase}
+  .kpi .v{font-size:40px;font-weight:700;line-height:1.1;margin-top:4px}
+  .kpi .d{font-size:13px;color:var(--gris)}
+  .grille{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+  .carte{background:var(--carte);border:1px solid var(--bord);border-radius:16px;padding:16px}
+  .carte.large{grid-column:1/-1}
+  .carte h2{margin:0 0 12px;font-size:16px}
+  .barre{display:grid;grid-template-columns:minmax(0,38%) 1fr 44px;align-items:center;gap:10px;margin:7px 0;font-size:13.5px}
+  .barre .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .barre .tr{background:#F1ECE3;border-radius:6px;height:16px;overflow:hidden}
+  .barre .rp{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--ambre),var(--orange))}
+  .barre .nb{text-align:right;font-weight:700}
+  .barre .nb small{font-weight:400;color:var(--gris)}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th{text-align:left;font-size:12px;letter-spacing:1px;color:var(--gris);font-weight:700;padding:8px 6px;border-top:2px solid var(--texte);border-bottom:1px solid var(--texte)}
+  td{padding:8px 6px;border-bottom:1px solid #EEE9E0}
+  tr:last-child td{border-bottom:2px solid var(--texte)}
+  .vide{color:var(--gris);font-size:14px}
+  .cle{max-width:420px;margin:60px auto;text-align:center}
+  .cle input{width:100%;font-family:inherit;font-size:16px;padding:12px;border:1px solid var(--bord);border-radius:10px;margin:12px 0}
+  .msg{display:none;position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--texte);color:#fff;padding:12px 18px;border-radius:12px;font-size:14px;z-index:9}
+  svg text{font-family:'Poppins',Arial,sans-serif}
+  @media (max-width:760px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.grille{grid-template-columns:1fr}.kpi .v{font-size:32px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="entete">
+    <div><div class="t">Inscriptions · Formation en géoépidémiologie</div><div class="s">R Users Community · mis à jour le <b id="maj">…</b></div></div>
+    <div class="actions"><button class="b1" id="copier">Copier un message de communication</button><button class="b2" id="actualiser">Actualiser</button></div>
+  </div>
+</header>
+
+<main id="zone">
+  <div class="kpis">
+    <div class="kpi"><div class="l">Inscrits</div><div class="v" id="k-total">…</div><div class="d">au total</div></div>
+    <div class="kpi"><div class="l">Aujourd'hui</div><div class="v" id="k-jour">…</div><div class="d">nouvelles inscriptions</div></div>
+    <div class="kpi"><div class="l">Pays</div><div class="v" id="k-pays">…</div><div class="d">représentés</div></div>
+    <div class="kpi"><div class="l">Doublons</div><div class="v" id="k-doub">…</div><div class="d">bloqués automatiquement</div></div>
+  </div>
+
+  <div class="grille">
+    <div class="carte large"><h2>Évolution des inscriptions (cumul par jour)</h2><div id="g-jours"></div></div>
+    <div class="carte"><h2>Pays</h2><div id="g-pays"></div></div>
+    <div class="carte"><h2>Domaine d'activité</h2><div id="g-domaine"></div></div>
+    <div class="carte"><h2>Niveau d'études</h2><div id="g-etudes"></div></div>
+    <div class="carte"><h2>Niveau en analyse des données</h2><div id="g-analyse"></div></div>
+    <div class="carte"><h2>Logiciels déjà utilisés</h2><div id="g-logiciels"></div></div>
+    <div class="carte"><h2>Niveau en R</h2><div id="g-r"></div></div>
+    <div class="carte"><h2>Niveau en SIG (QGIS, ArcGIS)</h2><div id="g-sig"></div></div>
+    <div class="carte"><h2>Résumé</h2><div id="resume" style="font-size:14px;line-height:1.6"></div></div>
+    <div class="carte large"><h2>Dernières inscriptions</h2><div id="t-dernieres"></div></div>
+  </div>
+</main>
+
+<div class="msg" id="msg"></div>
+
+<script>
+const URL_SERVICE = "https://script.google.com/macros/s/AKfycbwlgo_H8v4G3WsLJI3O9iiVPpnJoF2oVe84AyQ_QiIKCee6wNR7SVZmoAvw8_c6gak8jg/exec";
+const LIEN_INSCRIPTION = "https://agossoulionel.github.io/inscription-geoepi/";
+let DONNEES = null;
+
+function lireCle() {
+  const h = new URLSearchParams(location.hash.slice(1));
+  let c = h.get("cle");
+  if (c) { try { localStorage.setItem("ruc_cle_tableau", c); } catch (x) {} history.replaceState(null, "", location.pathname); }
+  if (!c) { try { c = localStorage.getItem("ruc_cle_tableau"); } catch (x) {} }
+  return c;
+}
+function demanderCle(texte) {
+  document.getElementById("zone").innerHTML = `<div class="cle carte"><h2>Accès au tableau de bord</h2><p class="vide">${texte}</p><input id="saisie" placeholder="Clé d'accès"><button class="b1" id="ok">Ouvrir</button></div>`;
+  document.getElementById("ok").onclick = () => { try { localStorage.setItem("ruc_cle_tableau", document.getElementById("saisie").value.trim()); } catch (x) {} location.reload(); };
+}
+function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+function barres(id, liste, total, max) {
+  const z = document.getElementById(id);
+  if (!liste.length) { z.innerHTML = '<p class="vide">Aucune donnée pour le moment.</p>'; return; }
+  const top = liste.slice(0, max || 10), m = top[0].n;
+  z.innerHTML = top.map(x => `<div class="barre"><div class="nm" title="${esc(x.cle)}">${esc(x.cle)}</div><div class="tr"><div class="rp" style="width:${(100 * x.n / m).toFixed(1)}%"></div></div><div class="nb">${x.n} <small>${Math.round(100 * x.n / total)}%</small></div></div>`).join("")
+    + (liste.length > top.length ? `<p class="vide" style="margin:8px 0 0">+ ${liste.length - top.length} autre(s)</p>` : "");
+}
+function courbe(id, jours) {
+  const z = document.getElementById(id);
+  if (!jours.length) { z.innerHTML = '<p class="vide">Aucune inscription pour le moment.</p>'; return; }
+  const W = 1000, H = 260, g = 70, b = 34, d = 40;
+  let cum = 0; const pts = jours.map(j => ({ ...j, c: (cum += j.n) }));
+  const maxC = Math.max(...pts.map(p => p.c)), maxN = Math.max(...pts.map(p => p.n));
+  const x = i => g + (pts.length === 1 ? (W - g - d) / 2 : i * (W - g - d) / (pts.length - 1));
+  const y = v => H - b - (v / maxC) * (H - b - 16);
+  const bw = Math.max(6, Math.min(40, (W - g - d) / pts.length * 0.5));
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Inscriptions cumulées par jour">`;
+  for (let k = 0; k <= 4; k++) { const v = Math.round(maxC * k / 4), yy = y(v); s += `<line x1="${g}" x2="${W - d}" y1="${yy}" y2="${yy}" stroke="#EEE9E0"/><text x="${g - 8}" y="${yy + 4}" font-size="12" text-anchor="end" fill="#5A6478">${v}</text>`; }
+  pts.forEach((p, i) => { const hh = (p.n / maxC) * (H - b - 16); s += `<rect x="${x(i) - bw / 2}" y="${H - b - hh}" width="${bw}" height="${hh}" rx="3" fill="#F5A524" opacity=".45"><title>${p.n} le ${p.cle}</title></rect>`; });
+  s += `<polyline fill="none" stroke="#E8590C" stroke-width="3" points="${pts.map((p, i) => x(i) + "," + y(p.c)).join(" ")}"/>`;
+  pts.forEach((p, i) => { s += `<circle cx="${x(i)}" cy="${y(p.c)}" r="4.5" fill="#E8590C"><title>${p.c} inscrits au ${p.cle}</title></circle>`; });
+  const pas = Math.ceil(pts.length / 8);
+  pts.forEach((p, i) => { if (i % pas === 0 || i === pts.length - 1) s += `<text x="${x(i)}" y="${H - 12}" font-size="12" text-anchor="middle" fill="#5A6478">${p.cle.slice(8, 10)}/${p.cle.slice(5, 7)}</text>`; });
+  s += `</svg><p class="vide" style="margin:6px 0 0"><span style="display:inline-block;width:14px;height:3px;background:#E8590C;vertical-align:middle"></span> cumul des inscrits &nbsp; <span style="display:inline-block;width:12px;height:10px;background:#F5A524;opacity:.5;vertical-align:middle"></span> inscriptions du jour</p>`;
+  z.innerHTML = s;
+}
+function afficher(D) {
+  DONNEES = D;
+  const jour = (D.parJour.find(j => j.cle === D.aujourdhui) || { n: 0 }).n;
+  const pays = D.pays.filter(p => p.cle !== "Non renseigné");
+  document.getElementById("maj").textContent = D.maj;
+  document.getElementById("k-total").textContent = D.total;
+  document.getElementById("k-jour").textContent = jour;
+  document.getElementById("k-pays").textContent = pays.length;
+  document.getElementById("k-doub").textContent = D.doublons;
+  courbe("g-jours", D.parJour);
+  barres("g-pays", D.pays, D.total, 10);
+  barres("g-domaine", D.domaine, D.total, 8);
+  barres("g-etudes", D.etudes, D.total);
+  barres("g-analyse", D.analyse, D.total);
+  barres("g-logiciels", D.logiciels, D.total);
+  barres("g-r", D.niveauR, D.total);
+  barres("g-sig", D.niveauSIG, D.total);
+  const pc = l => (l[0] ? `${esc(l[0].cle)} (${Math.round(100 * l[0].n / D.total)} %)` : "…");
+  document.getElementById("resume").innerHTML = D.total ? `<b>${D.total}</b> inscrits venus de <b>${pays.length}</b> pays.<br>Pays le plus représenté : <b>${pc(pays)}</b>.<br>Domaine principal : <b>${pc(D.domaine)}</b>.<br>Niveau d'études le plus fréquent : <b>${pc(D.etudes)}</b>.<br>Logiciel le plus utilisé : <b>${pc(D.logiciels)}</b>.` : '<p class="vide">Aucune inscription pour le moment.</p>';
+  const t = document.getElementById("t-dernieres");
+  t.innerHTML = D.dernieres.length ? `<table><thead><tr><th>Date</th><th>Nom</th><th>Pays</th><th>Domaine</th></tr></thead><tbody>${D.dernieres.map(r => `<tr><td>${esc(r.date)}</td><td>${esc(r.nom)}</td><td>${esc(r.pays)}</td><td>${esc(r.domaine)}</td></tr>`).join("")}</tbody></table>` : '<p class="vide">Aucune inscription pour le moment.</p>';
+}
+function messageCommunication() {
+  const D = DONNEES; if (!D) return "";
+  const pays = D.pays.filter(p => p.cle !== "Non renseigné");
+  const top = pays.slice(0, 3).map(p => p.cle).join(", ");
+  return `🎉 Déjà ${D.total} inscrits venus de ${pays.length} pays${top ? " (" + top + "…)" : ""} à notre formation 100 % gratuite en géoépidémiologie : modélisation spatiale et cartographie des risques sanitaires avec R, QGIS et ArcGIS !\n\n📅 Du 14 au 18 décembre 2026, de 18h à 21h, en ligne sur Zoom.\n\n👉 Il reste encore des places, inscrivez-vous ici :\n${LIEN_INSCRIPTION}`;
+}
+function toast(t) { const m = document.getElementById("msg"); m.textContent = t; m.style.display = "block"; setTimeout(() => m.style.display = "none", 2600); }
+async function charger() {
+  const demo = new URLSearchParams(location.search).has("demo");
+  if (demo) return afficher(window.DEMO);
+  const cle = lireCle();
+  if (!cle) return demanderCle("Saisissez la clé d'accès pour afficher les statistiques.");
+  try {
+    const r = await fetch(URL_SERVICE + "?action=stats&cle=" + encodeURIComponent(cle));
+    const D = await r.json();
+    if (D.erreur === "cle") { try { localStorage.removeItem("ruc_cle_tableau"); } catch (x) {} return demanderCle("Clé incorrecte. Réessayez."); }
+    afficher(D);
+  } catch (e) { toast("Impossible de charger les données. Vérifiez votre connexion."); }
+}
+document.getElementById("actualiser").onclick = () => { charger(); toast("Données actualisées"); };
+document.getElementById("copier").onclick = async () => {
+  const t = messageCommunication(); if (!t) return;
+  try { await navigator.clipboard.writeText(t); toast("Message copié, prêt à coller sur WhatsApp"); }
+  catch (e) { prompt("Copiez ce message :", t); }
+};
+charger();
+setInterval(() => { if (!document.hidden) charger(); }, 60000);
+</script>
+</body>
+</html>
