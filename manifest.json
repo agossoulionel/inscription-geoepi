@@ -1,7 +1,7 @@
 {
  "name": "Inscriptions RUC · Géoépidémiologie",
  "short_name": "Inscriptions RUC",
- "start_url": "stats.html",
+ "start_url": "accueil.html",
  "scope": "./",
  "display": "standalone",
  "background_color": "#F3F1EC",
@@ -19,6 +19,30 @@
    "sizes": "512x512",
    "type": "image/png",
    "purpose": "any maskable"
+  }
+ ],
+ "shortcuts": [
+  {
+   "name": "Formulaire d'inscription",
+   "short_name": "Formulaire",
+   "url": "index.html",
+   "icons": [
+    {
+     "src": "icone-192.png",
+     "sizes": "192x192"
+    }
+   ]
+  },
+  {
+   "name": "Tableau de bord",
+   "short_name": "Tableau de bord",
+   "url": "stats.html",
+   "icons": [
+    {
+     "src": "icone-192.png",
+     "sizes": "192x192"
+    }
+   ]
   }
  ]
 }

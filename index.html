@@ -94,6 +94,10 @@
 </head>
 <body>
 
+<div id="barre-app" style="display:none;position:sticky;top:0;z-index:30;background:#0F1B3D;padding:10px 14px;gap:8px">
+  <a href="accueil.html" style="color:#fff;text-decoration:none;font-weight:700;font-size:14px;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,.12)">‹ Accueil</a>
+  <a href="stats.html" style="color:#fff;text-decoration:none;font-weight:700;font-size:14px;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,.12)">Tableau de bord</a>
+</div>
 <header class="entete">
   <div class="entete-int">
     <div class="marque">
@@ -438,6 +442,9 @@ form.addEventListener("submit", async e => {
 });
 
 try { if (localStorage.getItem("ruc_geoepi_inscrit")) document.getElementById("deja-appareil").style.display = "block"; } catch (x) {}
+
+// Barre de navigation visible seulement dans l'application installée
+if (window.matchMedia("(display-mode: standalone)").matches || navigator.standalone) document.getElementById("barre-app").style.display = "flex";
 
 /* ---------- Page de remerciement ---------- */
 const ICONES = {
